@@ -115,9 +115,10 @@ class CrawlBook:
             
         with open(path + book[0] + '.txt', "w", encoding='utf-8') as file:
             for chapter in allChapterContent:
-                if chapter['title'].split(' ')[0].startswith('第') and chapter['title'].split(' ')[0].endswith('章'):
-                    file.write(chapter['title'] + '\n\n' + chapter['content'] + '\n')
-                elif len(chapter['title'].split('：')) == 2:
+                if '：' in chapter['title'].strip():
+                    if chapter['title'].strip().split(' ')[0].startswith('第') and chapter['title'].strip().split(' ')[0].endswith('章'):
+                        file.write(chapter['title'] + '\n\n' + chapter['content'] + '\n')
+                if len(chapter['title'].strip().split("：")) == 2:
                     file.write("第" + chapter['title'].split('：')[0] + "章 " + chapter['title'].split('：')[1] + '\n\n' + chapter['content'] + '\n')
         if verbose:
             print("[INFO] 爬取《" + book[0] + "》完成")
