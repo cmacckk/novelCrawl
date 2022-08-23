@@ -1,5 +1,3 @@
-from ast import parse
-from numpy import character
 import requests
 from urllib.parse import urlparse, urljoin
 from lxml import etree
@@ -11,6 +9,10 @@ import argparse
 import random
 
 
+# 搜索书籍
+class SearchBook:
+    def __init__(self, book):
+        self.book = book
 
 # 随机获得ua
 def getUserAgent():
