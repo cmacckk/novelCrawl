@@ -53,7 +53,7 @@ class SearchBook:
                     'author': authorList[i],
                     'introduce': introduceList[i],
                     'imgUrl': imgList[i],
-                    'source': 'bqg70.com'
+                    'source': 'bqg70'
                 }
             )
         return bookInfo
@@ -140,7 +140,7 @@ def tableShowBookInfo(bookInfo):
 def argparse_deal():
     parser = argparse.ArgumentParser(description='爬取笔趣阁的小说')
     parser.add_argument('-s', '--search', help='搜索小说,可以使用书名和作者名(bige7.com)')
-    parser.add_argument('-b', '--book', help='指定书籍号,如59(bige7.com)')
+    parser.add_argument('-b', '--book', help='指定书籍号,如59')
     parser.add_argument('-t', '--thread', help='线程数,默认为10', default=10, type=int)
     parser.add_argument('-v', '--verbose', action='store_true', help='显示详细信息,默认为True', default=True)
     parser.add_argument('-p', '--path', help='指定保存路径,默认为当前路径,格式为:/home/test/book/', default='./')
