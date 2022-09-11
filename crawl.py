@@ -94,7 +94,8 @@ class CrawlBook:
         content = xml.xpath('//div[@id="chaptercontent"]/text()')
         for data in content:
             result += data.replace("\u3000", "") + '\n'
-            
+        
+        print(title[0].split('_')[0])
         return {
             "title": title[0].split('_')[0],
             "content": result.rstrip()
@@ -115,11 +116,11 @@ class CrawlBook:
             
         with open(path + book[0] + '.txt', "w", encoding='utf-8') as file:
             for chapter in allChapterContent:
-                if '：' in chapter['title'].strip():
-                    if chapter['title'].strip().split(' ')[0].startswith('第') and chapter['title'].strip().split(' ')[0].endswith('章'):
-                        file.write(chapter['title'] + '\n\n' + chapter['content'] + '\n')
-                if len(chapter['title'].strip().split("：")) == 2:
-                    file.write("第" + chapter['title'].split('：')[0] + "章 " + chapter['title'].split('：')[1] + '\n\n' + chapter['content'] + '\n')
+                # if '：' in chapter['title'].strip():
+                #     if chapter['title'].strip().split(' ')[0].startswith('第') and chapter['title'].strip().split(' ')[0].endswith('章'):
+                file.write(chapter['title'] + '\n\n' + chapter['content'] + '\n')
+                # if len(chapter['title'].strip().split("：")) == 2:
+                #     file.write("第" + chapter['title'].split('：')[0] + "章 " + chapter['title'].split('：')[1] + '\n\n' + chapter['content'] + '\n')
         if verbose:
             print("[INFO] 爬取《" + book[0] + "》完成")
 
