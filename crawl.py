@@ -95,7 +95,6 @@ class CrawlBook:
         for data in content:
             result += data.replace("\u3000", "") + '\n'
         
-        print(title[0].split('_')[0])
         return {
             "title": title[0].split('_')[0],
             "content": result.rstrip()
