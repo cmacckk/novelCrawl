@@ -1,45 +1,31 @@
-from importlib.resources import path
-from urllib.parse import urlencode
 import requests
 from urllib import parse
-import random
 from lxml import etree
 from urllib.parse import urljoin
 from multiprocessing import Pool
 from tqdm import tqdm
+from utils.get_user_agent import get_random_user_agent
 
-# 随机获得ua
 
-
-def get_random_user_agent():
-    """获取随机UA头
-
-    Returns:
-        str: 随机UA头
+class BiQuGe5200Net:
+    """爬取`http://www.biqu5200.net/`小说内容
     """
-    first_num = random.randint(55, 62)
-    third_num = random.randint(0, 3200)
-    fourth_num = random.randint(0, 140)
-    os_type = [
-        '(Windows NT 6.1; WOW64)', '(Windows NT 10.0; WOW64)', '(X11; Linux x86_64)',
-        '(Macintosh; Intel Mac OS X 10_12_6)'
-    ]
-    chrome_version = 'Chrome/{}.0.{}.{}'.format(
-        first_num, third_num, fourth_num)
 
-    user_agent = ' '.join(['Mozilla/5.0', random.choice(os_type), 'AppleWebKit/537.36',
-                           '(KHTML, like Gecko)', chrome_version, 'Safari/537.36']
-                          )
-    return user_agent
-
-
-class BiQuGe5200:
     def __init__(self) -> None:
-        self.index_url = "http://www.ibiqu.org/"
-        self.search_url = "http://www.ibiqu.org/modules/article/search.php?searchkey="
-        self.book_url = "http://www.ibiqu.org/book/"
+        self.index_url = "http://www.biqu5200.net/"
+        self.search_url = "http://www.biqu5200.net/modules/article/search.php?searchkey="
+        self.book_url = "http://www.biqu5200.net/"
 
     def search_book(self, book):
+        """搜索书籍
+
+        Args:
+            book (str): 书籍名称
+
+        Returns:
+            str: 书名   作者名  书籍URL
+        """
+        book_infos = []
         response = requests.get(url=self.search_url + parse.quote(book),
                                 headers={"User-Agent": get_random_user_agent()})
         response_text = response.content.decode("gbk")
@@ -48,7 +34,7 @@ class BiQuGe5200:
         odd_infos = xml.xpath('//td[@class="odd"]/text()')
         authors = [odd_infos[i] for i in range(0, len(odd_infos), 2)]
         hrefs = xml.xpath('//td[@class="odd"]/a/@href')
-        url_hrefs = [urljoin(self.index_url, href) for href in hrefs]
+        # url_hrefs = [urljoin(self.index_url, href) for href in hrefs]
 
         # print(odd_infos)
         # print(hrefs)
@@ -57,14 +43,27 @@ class BiQuGe5200:
         # print(authors)
         # print(url_hrefs)
 
-        infos = ''
+        for i, _ in enumerate(books):
+            book_infos.append({
+                'book': books[i],
+                'book_id': hrefs[i].split('/')[3],
+                'author': authors[i],
+                'source': 'biqu5200'
+            })
 
-        for i in range(len(books)):
-            infos += f"{books[i]}\t{authors[i]}\t{url_hrefs[i]}\n"
 
-        return infos.strip()
+        return book_infos
 
     def crawl_book_chapter_urls(self, book_id):
+        """爬取书籍所有章节的URL
+
+        Args:
+            book_id (str): 书籍ID
+
+        Returns:
+            book (str): 书名
+            chapter_urls (list): 所有章节URL
+        """
         response = requests.get(url=urljoin(self.book_url, book_id) + '/',
                                 headers={"User-Agent": get_random_user_agent()})
         response_text = response.content.decode("gbk")
@@ -78,6 +77,14 @@ class BiQuGe5200:
         return book, chapter_urls
 
     def crawl_chapter_title_content(self, chapter_url):
+        """爬取单章标题及内容
+
+        Args:
+            chapter_url (str): 章节URL
+
+        Returns:
+            dict: 标题及内容
+        """
         try:
             response = requests.get(url=chapter_url,
                                     headers={"User-Agent": get_random_user_agent()})
@@ -100,14 +107,20 @@ class BiQuGe5200:
                 "content": "Content Error"
             }
 
-    def craw_book(self, book_id, thread=10):
+    def craw_book(self, book_id, thread=10, path='./'):
+        """爬取整本书
+
+        Args:
+            book_id (str): 书籍ID
+            thread (int, optional): 线程数. Defaults to 10.
+        """
         book, chapter_urls = self.crawl_book_chapter_urls(book_id)
 
         with Pool(thread) as p:
             chapters = list(tqdm(p.imap(self.crawl_chapter_title_content,
                                         chapter_urls), total=len(chapter_urls)))
 
-        with open('./' + book[0] + '.txt', "w", encoding='utf-8') as file:
+        with open(path + book[0] + '.txt', "w", encoding='utf-8') as file:
             for chapter in chapters:
                 # if '：' in chapter['title'].strip():
                 #     if chapter['title'].strip().split(' ')[0].startswith('第') and chapter['title'].strip().split(' ')[0].endswith('章'):
@@ -116,9 +129,9 @@ class BiQuGe5200:
 
 
 if __name__ == "__main__":
-    # infos = BiQuGe5200().search_book("大明第一臣")
+    # infos = BiQuGe5200Net().search_book("大明第一臣")
     # print(infos)
-    # print(BiQuGe5200().crawl_book_chapter_urls("154288"))
-    BiQuGe5200().crawl_chapter_title_content(
+    # print(BiQuGe5200Net().crawl_book_chapter_urls("154288"))
+    BiQuGe5200Net().crawl_chapter_title_content(
         'http://www.ibiqu.org/book/154288/184608739.htm')
-    # BiQuGe5200().craw_book("154288")
+    # BiQuGe5200Net().craw_book("154288")

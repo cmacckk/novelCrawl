@@ -1,1 +1,5 @@
 .history/
+__pycache__
+*.txt
+download/*
+test.py
