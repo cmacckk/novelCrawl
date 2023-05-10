@@ -46,7 +46,7 @@ class BiQuGe5200Net:
         for i, _ in enumerate(books):
             book_infos.append({
                 'book': books[i],
-                'book_id': hrefs[i].split('/')[3],
+                'book_id': hrefs[i].split('/')[1],
                 'author': authors[i],
                 'source': 'biqu5200'
             })

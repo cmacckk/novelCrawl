@@ -46,7 +46,7 @@ class IBiQuGeOrg:
         for i, _ in enumerate(books):
             book_infos.append({
                 'book': books[i],
-                'book_id': hrefs[i].split('/')[2],
+                'book_id': hrefs[i].split('/')[3],
                 'author': authors[i],
                 'source': 'ibiquge'
             })
