@@ -14,7 +14,7 @@ class IBiQuGeOrg:
     def __init__(self) -> None:
         self.index_url = "http://www.ibiqu.org/"
         self.search_url = "http://www.ibiqu.org/modules/article/search.php?searchkey="
-        self.book_url = "http://www.ibiqu.org/book/"
+        self.book_url = "http://www.ibiqu.org/"
 
     def search_book(self, book):
         """搜索书籍
@@ -64,6 +64,7 @@ class IBiQuGeOrg:
             book (str): 书名
             chapter_urls (list): 所有章节URL
         """
+        # print(urljoin(self.book_url, book_id) + '/')
         response = requests.get(url=urljoin(self.book_url, book_id) + '/',
                                 headers={"User-Agent": get_random_user_agent()})
         response_text = response.content.decode("gbk")
@@ -73,7 +74,6 @@ class IBiQuGeOrg:
         book = xml.xpath('//*[@id="info"]/h1/text()')
         # print(len(chapter_paths))
         chapter_urls = [urljoin(self.index_url, x) for x in chapter_paths]
-        # print(chapter_urls)
         return book, chapter_urls
 
     def crawl_chapter_title_content(self, chapter_url):
