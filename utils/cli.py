@@ -1,18 +1,26 @@
-import argparse
-from ast import arg
-import logging
-from src.bige5200.bige5200 import BiQuGe5200Net
-from src.bige7.bige7 import Bige7
-from src.ibiquge.ibiquge_org import IBiQuGeOrg
-from utils.book_show import table_show_book
+# Author: CMACCKK <emailforgty@163.com>
 
-FORMAT = "[%(asctime)s] [%(levelname)s] %(funcName)s: %(message)s"
-logging.basicConfig(format=FORMAT, level=logging.INFO)
+
+""" Crawl novel command-line interface
+
+    use to search and download novel
+
+    in home directory use command to search book:
+        python3 novel_crawl.py -s 武侠
+        or python3 novel_crawl.py --search 武侠
+
+    the result is search novel name contains "武侠"
+"""
+
+
+import argparse
+from src.log import LOGGER
+from src.crawl.bige7 import Bige7
+from utils.book_show import table_show_book
 
 
 def argparse_deal():
-    """命令行参数
-    """
+    """ Command-line interface arguments """
     parser = argparse.ArgumentParser(description='爬取笔趣阁的小说')
     parser.add_argument('-s', '--search', help='搜索小说,可以使用书名和作者名')
     parser.add_argument('-i', '--id', help='指定书籍号,如59')
@@ -26,20 +34,9 @@ def argparse_deal():
     args = parser.parse_args()
 
     if args.search:
-        table_show_book(Bige7().search_book(args.search)
-                        + IBiQuGeOrg().search_book(args.search)
-                        + BiQuGe5200Net().search_book(args.search))
-    elif args.id and args.ibiquge:
-        logging.info("使用ibiquge爬取")
-        if args.thread:
-            if args.path:
-                IBiQuGeOrg().craw_book(args.id, thread=args.thread, path=args.path)
-            else:
-                IBiQuGeOrg().craw_book(args.id, thread=args.thread)
-        else:
-            IBiQuGeOrg().craw_book(args.id)
+        table_show_book(Bige7().search_book(args.search))
     elif args.id and args.bqg7:
-        logging.info("使用bqg7爬取")
+        LOGGER.info("crawl bqg70.com")
         if args.thread:
             if args.path:
                 Bige7().craw_book("https://www.bqg70.com/book/" +
@@ -48,15 +45,5 @@ def argparse_deal():
                 Bige7().craw_book("https://www.bqg70.com/book/" + args.id + '/', thread=args.thread)
         else:
             Bige7().craw_book("https://www.bqg70.com/book/" + args.id + '/')
-
-    elif args.id and args.biqu5200:
-        logging.info("使用biqu5200爬取")
-        if args.thread:
-            if args.path:
-                BiQuGe5200Net().craw_book(args.id, thread=args.thread, path=args.path)
-            else:
-                BiQuGe5200Net().craw_book(args.id, thread=args.thread)
-        else:
-            BiQuGe5200Net().craw_book(args.id)
     else:
-        logging.info("参数错误")
+        LOGGER.info("参数错误")

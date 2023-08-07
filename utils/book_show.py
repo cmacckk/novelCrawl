@@ -12,7 +12,7 @@ def table_show_book(book_info):
     table.align['作者'] = 'c'
 
     for info in book_info:
-        table.add_row(['《' + info['book'] + '》',
+        table.add_row([info['book'],
                       info['author'],
                       info['book_id'],
                       info['source']
