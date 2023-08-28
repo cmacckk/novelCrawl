@@ -1,22 +1,23 @@
-import requests
-from urllib import parse
-from lxml import etree
 from urllib.parse import urljoin, urlparse, quote
-from multiprocessing import Pool
-from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor
-from rich.progress import Progress
-from utils.get_user_agent import generate_random_user_agent
+import base64
+import os
 import json
+import requests
+from ebooklib import epub
+from concurrent.futures import ThreadPoolExecutor
+from lxml import etree
+from rich.progress import Progress
+from selenium import webdriver
 from src.log import LOGGER
-from utils.config import TIMEOUT
-
+from src.request.request import make_request_with_retries
+from utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
+from utils.get_user_agent import generate_random_user_agent
 
 class Bige7:
     """ Content from www.bqg70.com """
 
-    def search_book(self, book):
-        """ search book
+    def search_book_api(self, book):
+        """ search book by requests
 
             Returns:
                 book_info: list[{'book': 'book name',
@@ -24,18 +25,10 @@ class Bige7:
                                  'author': 'author',
                                  'source': 'source'}]
         """
-        # Define default request headers
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                 'Chrome/114.0.0.0 Safari/537.36',
-                   }
-
         LOGGER.info("Search book %s", book)
 
-        response = requests.get(url='https://www.bqg70.com/user/search.html?q=' + quote(book),
-                                headers=headers,
-                                timeout=TIMEOUT)
-
-        LOGGER.debug('bqg70.com response content is: %s', response.text)
+        response = make_request_with_retries(
+            'https://www.bqg70.com/user/search.html?q=' + quote(book))
 
         html_content = response.content.decode('utf-8')
 
@@ -43,15 +36,7 @@ class Bige7:
         if html_content == '1':
             # site interface return fail
             LOGGER.warning('Request bqg70.com search book interface failed!')
-            book_info.append(
-                        {
-                            'book': '暂无',
-                            'book_id': '暂无',
-                            'author': '暂无',
-                            'source': 'bqg70'
-                        }
-                            )
-            return book_info
+            return
         # site interface return success
         LOGGER.info('Request bqg70.com search book interface success')
         info_json = json.loads(html_content)
@@ -76,18 +61,33 @@ class Bige7:
             LOGGER.error(error)
             return
 
+    def search_book_selenium(self, book, OS='Windows'):
+        """ search book by selenium (Develop)"""
+        if OS == 'Windows':
+            webdriver_options = webdriver.ChromeOptions()
+            webdriver_options.binary_location = WIN_CHROME_EXECUTABLE_PATH
+            webdriver_options.executable_path = WIN_CHROME_DRIVER_PATH
+            driver = webdriver.Chrome(options=webdriver_options)
+            # webdriver_options.add_argument('--headless')
+            # webdriver_options.add_argument('--disable-gpu')
+            driver.get('https://m.bqgso.cc/s?q=' + quote(book))
+
     def get_novel_chapter_urls(self, book_url):
         """ Get novel all chapter urls """
         parsed = urlparse(book_url)
         url = parsed.scheme + "://" + parsed.netloc
 
-        response = requests.get(url=book_url,
-                                headers={"User-Agent": generate_random_user_agent()},
-                                timeout=TIMEOUT)
+        response = make_request_with_retries(book_url)
+        if response is None:
+            LOGGER.error('Request %s failed', book_url)
+            return None, None, None, None
 
         html_content = response.content.decode('utf-8')
         xml = etree.HTML(html_content)
         book_name = xml.xpath('//span[@class="title"]/text()')
+        author = xml.xpath('//div[@class="small"]/span[1]/text()')[0].split('：')[1]
+        cover_url = xml.xpath('//div[@class="cover"]/img/@src')
+        file_extension = self.download_cover(cover_url[0])
         book_chapter_url_path = xml.xpath('//dd/a/@href')
 
         book_chapter_url_list = []
@@ -95,15 +95,35 @@ class Bige7:
         for path in book_chapter_url_path:
             if "book" in path:
                 book_chapter_url_list.append(urljoin(url, path))
-        return book_name, book_chapter_url_list
+        return book_name, book_chapter_url_list, author, file_extension
+
+    @staticmethod
+    def download_cover(url):
+        """ from bqg70 download cover """
+        filename = os.path.basename(url)
+        file_extension = os.path.splitext(filename)[1]
+        save_path = f'./img/cover.{file_extension}'
+        response = requests.get(
+                                url,
+                                headers={
+                                "User-Agent": generate_random_user_agent()},
+                                timeout=TIMEOUT
+                                )
+        if response.status_code == 200:
+            with open(save_path, "wb") as file:
+                file.write(response.content)
+            return file_extension
+        else:
+            return
 
     @staticmethod
     def get_single_chapter_title_and_content(url):
-        """ Get single chapter title and content """
+        """ From crawl url to get single chapter title and content """
         result = ""
-        response = requests.get(url,
-                                headers={"User-Agent": generate_random_user_agent()},
-                                timeout=TIMEOUT)
+        response = make_request_with_retries(url)
+        if response is None:
+            LOGGER.error('Request %s failed', url)
+            return {'title': 'Request failed', 'content': 'Request failed'}
         html_content = response.content.decode('utf-8')
         xml = etree.HTML(html_content)
         title = xml.xpath('//span[@class="title"]/text()')
@@ -116,43 +136,83 @@ class Bige7:
             "content": result.rstrip()
         }
 
-    def thread_pool_running(self, task_id, chapter_urls, progress):
-        result = []
-        for _, chapter_url in enumerate(chapter_urls):
-            # Get chapter title and content (Dict)
-            result = Bige7.get_single_chapter_title_and_content(chapter_url)
-            # Update progress rate
-            progress.update(task_id, advance=1)
-            # get the result
-
     def craw_book(self, book_url, thread=10, path='./'):
         """ crawl single book
             default save to current directory ./
+            output format is epub
         """
-        book, chapter_urls_list = self.get_novel_chapter_urls(book_url)
-
+        book, chapter_urls_list, author, file_extension = self.get_novel_chapter_urls(book_url)
+        if book is None or chapter_urls_list is None:
+            LOGGER.error('Get book %s chapter urls failed', book_url)
+            return
+        LOGGER.info('Crawl book %s, use %s thread', book[0], thread)
+        LOGGER.debug('Crawl book url is %s', book_url)
         # Create ThreadPoolExecutor as thread pool
-        executor = ThreadPoolExecutor(max_workers=5)
+        executor = ThreadPoolExecutor(max_workers=thread)
+
+        futures = [executor.submit(
+            self.get_single_chapter_title_and_content, url) for url in chapter_urls_list[:-10]]
 
         # Create progress object as context manager
         with Progress() as progress:
             # add task
             task_length = len(chapter_urls_list[:-10])
-            task = progress.add_task('[red]Crawl task', total=task_length)
+            task_bar = progress.add_task(
+                f'[red]Crawl 《{book[0]}》', total=task_length)
 
             # Use thread pool execute task
-            future = executor.submit(self.get_single_chapter_title_and_content, task, chapter_urls_list[:-10], progress)
+            while not all(future.done() for future in futures):
+                progress.update(task_bar, completed=sum(
+                    1 for future in futures if future.done()))
 
-        # with Pool(thread) as pool:
-        #     all_chapter_content = list(
-        #         tqdm(
-        #             pool.imap(self.get_single_chapter_title_and_content,
-        #                     book_chapter_url_list[:-10]),
-        #                     total=len(book_chapter_url_list[:-10])
-        #             )
-        #         )
+            # Create epub object
+            epub_book =  epub.EpubBook()
+            epub_book.set_title(book[0])
+            epub_book.set_language('zh')
+            epub_book.add_author(author)
 
-        # with open(path + book[0] + '.txt', "w", encoding='utf-8') as file:
-        #     for chapter in all_chapter_content:
-        #         file.write(chapter['title'] + '\n\n' +
-        #                    chapter['content'] + '\n')
+            # 设置封面图片（base64 编码）
+            cover_image_path = f"./img/cover.{file_extension}"  # 替换为你的封面图片路径
+            with open(cover_image_path, "rb") as cover_image_file:
+                cover_image_data = cover_image_file.read()
+                cover_image_base64 = base64.b64encode(cover_image_data).decode("utf-8")
+
+            cover_page = epub.EpubHtml(title="Cover Page", file_name="cover.xhtml", lang="zh")
+            cover_page.content = f'<img style="width: 100%;height: 100%;" src="data:image/jpeg;base64,{cover_image_base64}" alt="Cover">'
+            epub_book.add_item(cover_page)
+
+            if not os.path.exists(os.path.join(os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME)):
+                # Create output directory
+                LOGGER.info(
+                    'Current directory "%s" not exist "download" directory, create it', os.getcwd())
+                os.makedirs(os.path.join(
+                    os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME))
+
+            for future in futures:
+                chapter_json = future.result()
+                # Create chapter object
+                chapter = epub.EpubHtml(title=chapter_json["title"], file_name=f"{chapter_json['title']}.xhtml", lang="zh")
+
+                content_list = chapter_json['content'].split('\n')
+
+                filtered_list = [item for item in content_list if item != ""]
+
+                content = ""
+
+                for item in filtered_list:
+                    content += f"<p>{item}</p>"
+
+                # 将自定义内容设置为章节的内容
+                chapter.content = f"{content}"
+
+                # 将章节添加到书籍
+                epub_book.add_item(chapter)
+
+            # 设置书籍的内容
+            epub_book.spine = [chapter for chapter in epub_book.items if isinstance(chapter, epub.EpubHtml)]
+            # 生成EPUB文件
+            book_path = os.path.join(path, book[0])
+            epub.write_epub(book_path + ".epub", epub_book, {})
+
+        LOGGER.info('Crawl %s success, book write to %s',
+                    book[0], os.path.join(os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME) + '\\' + book[0] + '.epub')

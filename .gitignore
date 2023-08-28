@@ -1,5 +1,7 @@
 .history/
 __pycache__
 *.txt
+*.epub
 download/*
 test.py
+.vscode
