@@ -1,5 +1,9 @@
 import logging
 
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s: - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S')
+
 class CustomFormatter(logging.Formatter):
     grey = "\x1b[38;20m"
     yellow = "\x1b[33;20m"
@@ -23,8 +27,13 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 # 创建logger对象
-LOGGER = logging.getLogger("My_app")
-LOGGER.setLevel(logging.DEBUG)
+LOGGER = logging.getLogger("novelCrawl")
+LOGGER.setLevel(logging.INFO)
+
+fh = logging.FileHandler('novelCrawl.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+
 
 # 创建控制台处理器
 ch = logging.StreamHandler()
@@ -33,3 +42,4 @@ ch.setFormatter(CustomFormatter())
 
 # 将处理器添加到logger
 LOGGER.addHandler(ch)
+LOGGER.addHandler(fh)

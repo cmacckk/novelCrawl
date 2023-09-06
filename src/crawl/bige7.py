@@ -12,6 +12,8 @@ from src.log import LOGGER
 from src.request.request import make_request_with_retries
 from utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
 from utils.get_user_agent import generate_random_user_agent
+from src.data.book import Book
+
 
 class Bige7:
     """ Content from www.bqg70.com """
@@ -85,17 +87,18 @@ class Bige7:
         html_content = response.content.decode('utf-8')
         xml = etree.HTML(html_content)
         book_name = xml.xpath('//span[@class="title"]/text()')
-        author = xml.xpath('//div[@class="small"]/span[1]/text()')[0].split('：')[1]
+        author = xml.xpath(
+            '//div[@class="small"]/span[1]/text()')[0].split('：')[1]
         cover_url = xml.xpath('//div[@class="cover"]/img/@src')
-        file_extension = self.download_cover(cover_url[0])
+        cover_file_extension = self.download_cover(cover_url[0])
         book_chapter_url_path = xml.xpath('//dd/a/@href')
 
         book_chapter_url_list = []
 
         for path in book_chapter_url_path:
-            if "book" in path:
+            if parsed.path in path:
                 book_chapter_url_list.append(urljoin(url, path))
-        return book_name, book_chapter_url_list, author, file_extension
+        return book_name, book_chapter_url_list, author, cover_file_extension
 
     @staticmethod
     def download_cover(url):
@@ -104,11 +107,11 @@ class Bige7:
         file_extension = os.path.splitext(filename)[1]
         save_path = f'./img/cover.{file_extension}'
         response = requests.get(
-                                url,
-                                headers={
-                                "User-Agent": generate_random_user_agent()},
-                                timeout=TIMEOUT
-                                )
+            url,
+            headers={
+                "User-Agent": generate_random_user_agent()},
+            timeout=TIMEOUT
+        )
         if response.status_code == 200:
             with open(save_path, "wb") as file:
                 file.write(response.content)
@@ -132,87 +135,149 @@ class Bige7:
             result += data.replace("\u3000", "") + '\n'
 
         return {
-            "title": title[0].split('_')[0],
+            "title": title[0],
             "content": result.rstrip()
         }
 
-    def craw_book(self, book_url, thread=10, path='./'):
+    def crawl_book_with_thread_pool(self, book_name, thread, urls):
+        """ Use thread pool to crawl book """
+        executor = ThreadPoolExecutor(max_workers=thread)
+
+        futures = [executor.submit(
+            self.get_single_chapter_title_and_content, url) for url in urls]
+
+        # Create progress object as context manager
+        with Progress() as progress:
+            # add task
+            task_length = len(urls)
+            task_bar = progress.add_task(
+                f'[red]Crawl 《{book_name}》', total=task_length)
+
+            # Use thread pool execute task
+            while not all(future.done() for future in futures):
+                progress.update(task_bar, completed=sum(
+                    1 for future in futures if future.done()))
+        return futures
+
+    def craw_book(self, book_url, thread=10, path='./', output_type='epub'):
         """ crawl single book
             default save to current directory ./
             output format is epub
         """
-        book, chapter_urls_list, author, file_extension = self.get_novel_chapter_urls(book_url)
+        book, chapter_urls_list, author, cover_file_extension = self.get_novel_chapter_urls(
+            book_url)
         if book is None or chapter_urls_list is None:
             LOGGER.error('Get book %s chapter urls failed', book_url)
             return
         LOGGER.info('Crawl book %s, use %s thread', book[0], thread)
         LOGGER.debug('Crawl book url is %s', book_url)
         # Create ThreadPoolExecutor as thread pool
-        executor = ThreadPoolExecutor(max_workers=thread)
+        futures = self.crawl_book_with_thread_pool(
+            book[0], thread, chapter_urls_list)
 
-        futures = [executor.submit(
-            self.get_single_chapter_title_and_content, url) for url in chapter_urls_list[:-10]]
+        book_data = Book(book[0], author)
+        if output_type == 'epub':
+            self.output_epub(book_data, path, futures, cover_file_extension)
+        elif output_type == 'txt':
+            self.output_txt(book_data, path, futures)
 
-        # Create progress object as context manager
-        with Progress() as progress:
-            # add task
-            task_length = len(chapter_urls_list[:-10])
-            task_bar = progress.add_task(
-                f'[red]Crawl 《{book[0]}》', total=task_length)
 
-            # Use thread pool execute task
-            while not all(future.done() for future in futures):
-                progress.update(task_bar, completed=sum(
-                    1 for future in futures if future.done()))
-
-            # Create epub object
-            epub_book =  epub.EpubBook()
-            epub_book.set_title(book[0])
-            epub_book.set_language('zh')
+    def create_epub_book(self, book_name, language='zh', author=None):
+        """ Create epub book object """
+        epub_book = epub.EpubBook()
+        epub_book.set_title(book_name)
+        epub_book.set_language(language)
+        if author is not None:
             epub_book.add_author(author)
 
-            # 设置封面图片（base64 编码）
-            cover_image_path = f"./img/cover.{file_extension}"  # 替换为你的封面图片路径
-            with open(cover_image_path, "rb") as cover_image_file:
-                cover_image_data = cover_image_file.read()
-                cover_image_base64 = base64.b64encode(cover_image_data).decode("utf-8")
+        return epub_book
 
-            cover_page = epub.EpubHtml(title="Cover Page", file_name="cover.xhtml", lang="zh")
-            cover_page.content = f'<img style="width: 100%;height: 100%;" src="data:image/jpeg;base64,{cover_image_base64}" alt="Cover">'
-            epub_book.add_item(cover_page)
+    def create_and_set_epub_cover_image(self, epub_book, cover_image_path):
+        """ Create and set epub cover image """
+        with open(cover_image_path, "rb") as cover_image_file:
+            cover_image_data = cover_image_file.read()
+            cover_image_base64 = base64.b64encode(
+                cover_image_data).decode("utf-8")
 
-            if not os.path.exists(os.path.join(os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME)):
-                # Create output directory
-                LOGGER.info(
-                    'Current directory "%s" not exist "download" directory, create it', os.getcwd())
-                os.makedirs(os.path.join(
-                    os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME))
+        # 创建封面页面
+        cover_page = epub.EpubHtml(
+            title="Cover Page", file_name="cover.xhtml", lang="zh")
+        cover_page.content = f'<img style="width: 100%;height: 100%;" src="data:image/jpeg;base64,{cover_image_base64}" alt="Cover">'
+        epub_book.add_item(cover_page)
 
+    def current_dir_if_not_directory_create(self, dir_name):
+        """ If not exist directory then create """
+        # 如果没有下载目录则创建
+        if not os.path.exists(os.path.join(os.getcwd(), dir_name)):
+            # Create output directory
+            LOGGER.info(
+                'Current directory "%s" not exist "%s" directory, create it', os.getcwd(), dir_name)
+            os.makedirs(os.path.join(
+                os.getcwd(), dir_name))
+
+    def crawl_result_to_epub(self, epub_book, futures, path, book_name):
+        """ Crawl result to epub """
+        for future in futures:
+            chapter_json = future.result()
+            # Create chapter object
+            chapter = epub.EpubHtml(
+                title=chapter_json["title"], file_name=f"{chapter_json['title']}.xhtml", lang="zh")
+
+            # Split content with \n
+            content_list = chapter_json['content'].split('\n')
+
+            # Filter empty string
+            filtered_list = [item for item in content_list if item != ""]
+
+            content = ""
+
+            for item in filtered_list:
+                content += f"<p>{item}</p>"
+
+            # 将自定义内容设置为章节的内容
+            chapter.content = f"<h1>{chapter_json['title']}</h1>{content}"
+
+            # 将章节添加到书籍
+            epub_book.add_item(chapter)
+
+        # 设置书籍的内容
+        epub_book.spine = [
+            chapter for chapter in epub_book.items if isinstance(chapter, epub.EpubHtml)]
+        # 生成EPUB文件
+        book_path = os.path.join(path, book_name)
+        epub.write_epub(book_path + ".epub", epub_book, {})
+        LOGGER.info('Output epub file to %s.epub', book_path)
+
+    def output_epub(self, book_data: Book, path, futures, file_extension):
+        """ Output crawl result with epub file format """
+        # Create epub object
+        epub_book = self.create_epub_book(book_data.title, author=book_data.author)
+
+        self.create_and_set_epub_cover_image(epub_book=epub_book,
+                                             cover_image_path=f"./img/cover.{file_extension}")
+
+        self.current_dir_if_not_directory_create(DEFAULT_DOWNLOAD_PATH_NAME)
+
+        self.crawl_result_to_epub(epub_book=epub_book,
+                                  futures=futures,
+                                  path=path,
+                                  book_name=book_data.title)
+
+    def output_txt(self, book_data: Book, path, futures):
+        """ Output crawl result with txt file format """
+        self.current_dir_if_not_directory_create(DEFAULT_DOWNLOAD_PATH_NAME)
+
+        self.crawl_result_to_txt(futures=futures,
+                                 path=path,
+                                 book_name=book_data.title)
+
+    def crawl_result_to_txt(self, futures, path, book_name):
+        """ Crawl result to txt """
+        with open(os.path.join(path, book_name + ".txt"), "w", encoding="utf-8") as file:
             for future in futures:
                 chapter_json = future.result()
-                # Create chapter object
-                chapter = epub.EpubHtml(title=chapter_json["title"], file_name=f"{chapter_json['title']}.xhtml", lang="zh")
+                file.write(chapter_json["title"] + "\n")
+                file.write(chapter_json["content"] + "\n\n")
 
-                content_list = chapter_json['content'].split('\n')
-
-                filtered_list = [item for item in content_list if item != ""]
-
-                content = ""
-
-                for item in filtered_list:
-                    content += f"<p>{item}</p>"
-
-                # 将自定义内容设置为章节的内容
-                chapter.content = f"{content}"
-
-                # 将章节添加到书籍
-                epub_book.add_item(chapter)
-
-            # 设置书籍的内容
-            epub_book.spine = [chapter for chapter in epub_book.items if isinstance(chapter, epub.EpubHtml)]
-            # 生成EPUB文件
-            book_path = os.path.join(path, book[0])
-            epub.write_epub(book_path + ".epub", epub_book, {})
-
-        LOGGER.info('Crawl %s success, book write to %s',
-                    book[0], os.path.join(os.getcwd(), DEFAULT_DOWNLOAD_PATH_NAME) + '\\' + book[0] + '.epub')
+        # 生成txt文件
+        LOGGER.info('Output epub file to %s.txt', os.path.join(path, book_name))

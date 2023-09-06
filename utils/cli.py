@@ -27,9 +27,9 @@ def argparse_deal():
     parser.add_argument('-i', '--id', help='指定书籍号,如59')
     parser.add_argument('-t', '--thread', help='线程数,默认为10',
                         default=10, type=int)
-    parser.add_argument('-g', '--ibiquge',
-                        help='使用ibiquge来源', action="store_true")
     parser.add_argument('-b', '--bqg7', help='使用bqg70来源', action="store_true")
+    parser.add_argument('-e', '--epub', help='输出为epub格式文件', action="store_true")
+    parser.add_argument('-x', '--txt', help='输出为txt格式文件', action="store_true")
     parser.add_argument(
         '-p', '--path', help='指定保存路径,默认为当前路径,格式为:/home/test/book/', default=DEFAULT_DOWNLOAD_PATH)
     args = parser.parse_args()
@@ -41,11 +41,21 @@ def argparse_deal():
     elif args.id and args.bqg7:
         if args.thread:
             if args.path:
-                Bige7().craw_book(BIGE7_BOOK_URL +
-                                  args.id + '/', thread=args.thread, path=args.path)
+                if args.epub:
+                    Bige7().craw_book(BIGE7_BOOK_URL +
+                                    args.id + '/', thread=args.thread, path=args.path, output_type='epub')
+                elif args.txt:
+                    Bige7().craw_book(BIGE7_BOOK_URL +
+                                    args.id + '/', thread=args.thread, path=args.path, output_type='txt')
             else:
-                Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/', thread=args.thread)
+                if args.epub:
+                    Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/', thread=args.thread, output_type='epub')
+                elif args.txt:
+                    Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/', thread=args.thread, output_type='txt')
         else:
-            Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/')
+            if args.epub:
+                Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/', output_type='epub')
+            elif args.txt:
+                Bige7().craw_book(BIGE7_BOOK_URL + args.id + '/', output_type='txt')
     else:
         LOGGER.info("参数错误")
