@@ -1,4 +1,5 @@
 from urllib.parse import urljoin, urlparse, quote
+import time
 import base64
 import os
 import json
@@ -12,9 +13,27 @@ from src.log import LOGGER
 from src.request.request import make_request_with_retries
 from utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
 from utils.get_user_agent import generate_random_user_agent
+from DrissionPage import WebPage
 
 class Bige7:
     """ Content from www.bqg70.com """
+    def search_by_drission_page(self, book_name):
+        """ Use DrissionPage func to crawl book information """
+        page = WebPage()
+        page.get('https://www.bqg70.com/')
+        page.ele('@name=q').input(book_name)
+        page.ele('@type=submit').click()
+        loop = 5
+        page.wait.load_start()
+        for _ in range(loop):
+            div = page.ele('@class=hots')
+            if div.text == '加载中……':
+                time.sleep(2)
+            else:
+                break
+        if div.text == '暂无':
+            return '暂时无法使用搜索功能'
+        print(div.text)
 
     def search_book_api(self, book):
         """ search book by requests
