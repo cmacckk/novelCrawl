@@ -1,22 +1,65 @@
 from urllib.parse import urljoin, urlparse, quote
+import time
 import base64
 import os
 import json
+from concurrent.futures import ThreadPoolExecutor
 import requests
 from ebooklib import epub
-from concurrent.futures import ThreadPoolExecutor
 from lxml import etree
 from rich.progress import Progress
 from selenium import webdriver
+from DrissionPage import WebPage, ChromiumOptions
+from DrissionPage.errors import ElementNotFoundError
+from DrissionPage.common import By
 from src.log import LOGGER
 from src.request.request import make_request_with_retries
-from utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
-from utils.get_user_agent import generate_random_user_agent
+from src.utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
+from src.utils.get_user_agent import generate_random_user_agent
 from src.data.book import Book
-
 
 class Bige7:
     """ Content from www.bqg70.com """
+    def search_by_drission_page(self, book_name):
+        """ Use DrissionPage func to crawl book information """
+        LOGGER.info("Search book %s", book_name)
+        chromium_options = ChromiumOptions()
+        chromium_options.set_argument('--headless')
+        page = WebPage(driver_or_options=chromium_options)
+        page.get('https://www.bqg70.com/')
+        page.ele('@name=q').input(book_name)
+        page.ele('@type=submit').click()
+        loop = 5
+        page.wait.load_start()
+        try:
+            for index in range(loop):
+                div = page.ele('@class=hots', timeout=4)
+                if div.text == '加载中……':
+                    LOGGER.info('Loading search result, wait 2s, try %s', index + 1)
+                    time.sleep(2)
+                else:
+                    break
+            if div.text == '暂无':
+                return '暂时无法使用搜索功能'
+        except ElementNotFoundError:
+            LOGGER.info('Loading over...')
+
+        authors_loc = (By.XPATH, '//div[@class="author"]')
+        book_names_loc = (By.XPATH, '//h4[@class="bookname"]/a')
+
+        authors = page.eles(authors_loc)
+        book_names = page.eles(book_names_loc)
+
+        book_info = []
+        for index, name in enumerate(book_names):
+            book_info.append(
+                {'book': name.text,
+                'book_id': name.link.split('/')[-2],
+                'author': authors[index].text.split('：')[-1],
+                'source': 'bqg70'}
+            )
+        page.close_driver()
+        return book_info
 
     def search_book_api(self, book):
         """ search book by requests

@@ -16,8 +16,8 @@
 import argparse
 from src.log import LOGGER
 from src.crawl.bige7 import Bige7
-from utils.book_show import rich_show_book
-from utils.config import DEFAULT_DOWNLOAD_PATH, BIGE7_BOOK_URL
+from src.utils.book_show import rich_show_book
+from src.utils.config import DEFAULT_DOWNLOAD_PATH, BIGE7_BOOK_URL
 
 
 def argparse_deal():
@@ -35,7 +35,7 @@ def argparse_deal():
     args = parser.parse_args()
 
     if args.search:
-        search_info = Bige7().search_book_api(args.search)
+        search_info = Bige7().search_by_drission_page(args.search)
         if search_info:
             rich_show_book(search_info)
     elif args.id and args.bqg7:

@@ -1,8 +1,7 @@
-import os
 import time
 import requests
-from utils.get_user_agent import generate_random_user_agent
-from utils.config import TIMEOUT
+from src.utils.get_user_agent import generate_random_user_agent
+from src.utils.config import TIMEOUT
 from src.log import LOGGER
 
 

@@ -18,3 +18,21 @@
 2023-09-05 21:51:39 - novelCrawl - INFO: - Output epub file to ./download/美艳教师.txt
 2023-09-05 21:53:58 - novelCrawl - INFO: - Crawl book 我家娘子，不对劲, use 10 thread
 2023-09-05 21:58:48 - novelCrawl - INFO: - Output epub file to ./download/我家娘子，不对劲.txt
+2023-09-28 10:52:40 - novelCrawl - INFO: - Search book 武侠
+2023-09-28 10:52:44 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2023-09-28 10:52:50 - novelCrawl - INFO: - Loading over...
+2023-09-28 10:53:48 - novelCrawl - INFO: - Search book 武侠
+2023-09-28 10:54:02 - novelCrawl - INFO: - Crawl book 催眠小说合集, use 10 thread
+2023-09-28 10:54:29 - novelCrawl - INFO: - Current directory "E:\code\python\novelCrawl" not exist "download" directory, create it
+2023-09-28 10:54:29 - novelCrawl - INFO: - Output epub file to ./download/催眠小说合集.txt
+2023-10-07 11:10:36 - novelCrawl - INFO: - Search book 武侠
+2023-10-07 11:10:39 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2023-10-07 11:10:45 - novelCrawl - INFO: - Loading over...
+2023-10-07 11:36:04 - novelCrawl - INFO: - Search book 我真没想
+2023-10-07 11:36:06 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2023-10-07 11:36:12 - novelCrawl - INFO: - Loading over...
+2023-10-07 11:37:08 - novelCrawl - ERROR: - Request failed after 5 retries.
+2023-10-07 11:37:08 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/36306/ failed
+2023-10-07 11:37:08 - novelCrawl - ERROR: - Get book https://www.bqg70.com/book/36306/ chapter urls failed
+2023-10-07 11:37:21 - novelCrawl - INFO: - Crawl book 我真没想过妻子是女帝, use 10 thread
+2023-10-07 11:37:27 - novelCrawl - INFO: - Output epub file to ./download/我真没想过妻子是女帝.txt
