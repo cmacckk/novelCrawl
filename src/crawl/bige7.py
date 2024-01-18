@@ -14,7 +14,7 @@ from DrissionPage.errors import ElementNotFoundError
 from DrissionPage.common import By
 from src.log import LOGGER
 from src.request.request import make_request_with_retries
-from src.utils.config import DEFAULT_DOWNLOAD_PATH_NAME, WIN_CHROME_DRIVER_PATH, WIN_CHROME_EXECUTABLE_PATH, TIMEOUT
+from src.utils.config import DEFAULT_DOWNLOAD_PATH_NAME, CHROME_DRIVER_PATH, CHROME_EXECUTABLE_PATH, TIMEOUT
 from src.utils.get_user_agent import generate_random_user_agent
 from src.data.book import Book
 
@@ -110,8 +110,8 @@ class Bige7:
         """ search book by selenium (Develop)"""
         if OS == 'Windows':
             webdriver_options = webdriver.ChromeOptions()
-            webdriver_options.binary_location = WIN_CHROME_EXECUTABLE_PATH
-            webdriver_options.executable_path = WIN_CHROME_DRIVER_PATH
+            webdriver_options.binary_location = CHROME_EXECUTABLE_PATH
+            webdriver_options.executable_path = CHROME_DRIVER_PATH
             driver = webdriver.Chrome(options=webdriver_options)
             # webdriver_options.add_argument('--headless')
             # webdriver_options.add_argument('--disable-gpu')

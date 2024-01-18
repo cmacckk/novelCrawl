@@ -36,3 +36,14 @@
 2023-10-07 11:37:08 - novelCrawl - ERROR: - Get book https://www.bqg70.com/book/36306/ chapter urls failed
 2023-10-07 11:37:21 - novelCrawl - INFO: - Crawl book 我真没想过妻子是女帝, use 10 thread
 2023-10-07 11:37:27 - novelCrawl - INFO: - Output epub file to ./download/我真没想过妻子是女帝.txt
+2023-12-05 19:50:32 - novelCrawl - INFO: - 参数错误
+2023-12-05 19:50:43 - novelCrawl - INFO: - Search book 黑神话
+2023-12-05 19:50:51 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2023-12-05 19:50:57 - novelCrawl - INFO: - Loading over...
+2023-12-05 19:51:29 - novelCrawl - INFO: - Crawl book 黑神话：大唐, use 10 thread
+2023-12-05 19:54:38 - novelCrawl - INFO: - Output epub file to ./download/黑神话：大唐.txt
+2024-01-18 16:57:46 - novelCrawl - INFO: - Search book 姝︿緺
+2024-01-18 17:08:44 - novelCrawl - INFO: - Search book 姝︿緺
+2024-01-18 17:11:32 - novelCrawl - INFO: - Search book 姝︿緺
+2024-01-18 17:11:54 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2024-01-18 17:12:00 - novelCrawl - INFO: - Loading over...
