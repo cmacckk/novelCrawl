@@ -6,3 +6,4 @@ download/*
 test.py
 .vscode
 .idea/
+*.log
