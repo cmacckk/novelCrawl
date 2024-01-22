@@ -59,3 +59,190 @@
 2024-01-19 10:40:52 - novelCrawl - INFO: - Search book 蛊真人
 2024-01-19 10:40:54 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
 2024-01-19 10:41:00 - novelCrawl - INFO: - Loading over...
+2024-01-22 11:20:16 - novelCrawl - INFO: - Search book 我真没想重生啊
+2024-01-22 11:20:20 - novelCrawl - INFO: - Loading search result, wait 2s, try 1
+2024-01-22 11:20:27 - novelCrawl - INFO: - Loading over...
+2024-01-22 11:21:37 - novelCrawl - INFO: - Crawl book 我真没想重生啊, use 10 thread
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/947.html failed
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/948.html failed
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/949.html failed
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/951.html failed
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/952.html failed
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/954.html failed
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/953.html failed
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:36 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/950.html failed
+2024-01-22 11:25:37 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:37 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/955.html failed
+2024-01-22 11:25:37 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:37 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/956.html failed
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/957.html failed
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/959.html failed
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/958.html failed
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/960.html failed
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/961.html failed
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/962.html failed
+2024-01-22 11:25:55 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/966.html failed
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/963.html failed
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/965.html failed
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:25:56 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/964.html failed
+2024-01-22 11:26:13 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:13 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/967.html failed
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/968.html failed
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/969.html failed
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/970.html failed
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/971.html failed
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/973.html failed
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/974.html failed
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/975.html failed
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:15 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/972.html failed
+2024-01-22 11:26:16 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:16 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/976.html failed
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/977.html failed
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/978.html failed
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:33 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/979.html failed
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/981.html failed
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/980.html failed
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/982.html failed
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:34 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/984.html failed
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/985.html failed
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/983.html failed
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:35 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/986.html failed
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/987.html failed
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/988.html failed
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:52 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/989.html failed
+2024-01-22 11:26:53 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:53 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/990.html failed
+2024-01-22 11:26:53 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:53 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/991.html failed
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/992.html failed
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/993.html failed
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/994.html failed
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:54 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/995.html failed
+2024-01-22 11:26:55 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:26:55 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/996.html failed
+2024-01-22 11:27:11 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:11 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/998.html failed
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/997.html failed
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/999.html failed
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1000.html failed
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1001.html failed
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1002.html failed
+2024-01-22 11:27:13 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:13 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1003.html failed
+2024-01-22 11:27:13 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:13 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1004.html failed
+2024-01-22 11:27:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1005.html failed
+2024-01-22 11:27:14 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:14 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1006.html failed
+2024-01-22 11:27:31 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:31 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1007.html failed
+2024-01-22 11:27:31 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:31 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1009.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1011.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1010.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1008.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1013.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1012.html failed
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:32 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1014.html failed
+2024-01-22 11:27:33 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:33 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1015.html failed
+2024-01-22 11:27:33 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:34 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1016.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1018.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1017.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1021.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1019.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1020.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1022.html failed
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:51 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1023.html failed
+2024-01-22 11:27:52 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:52 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1024.html failed
+2024-01-22 11:27:52 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:52 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1025.html failed
+2024-01-22 11:27:53 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:27:53 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1026.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1027.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1029.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1032.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1028.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1030.html failed
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:10 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:11 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1031.html failed
+2024-01-22 11:28:11 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:11 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1033.html failed
+2024-01-22 11:28:11 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1034.html failed
+2024-01-22 11:28:12 - novelCrawl - ERROR: - Request failed after 5 retries.
+2024-01-22 11:28:12 - novelCrawl - ERROR: - Request https://www.bqg70.com/book/218/1035.html failed
+2024-01-22 11:28:12 - novelCrawl - INFO: - Output epub file to ./download/我真没想重生啊.txt
+2024-01-22 11:29:48 - novelCrawl - INFO: - Search book 我真没想重生啊
+2024-01-22 11:29:52 - novelCrawl - INFO: - Crawl book 我真没想重生啊, use 10 thread
+2024-01-22 11:34:24 - novelCrawl - INFO: - Output epub file to ./download/我真没想重生啊.txt
+2024-01-22 14:48:38 - novelCrawl - INFO: - Crawl book 我真没想重生啊, use 10 thread

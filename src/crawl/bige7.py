@@ -17,6 +17,7 @@ from src.request.request import make_request_with_retries
 from src.utils.config import DEFAULT_DOWNLOAD_PATH_NAME, CHROME_DRIVER_PATH, CHROME_EXECUTABLE_PATH, TIMEOUT
 from src.utils.get_user_agent import generate_random_user_agent
 from src.data.book import Book
+import re
 
 class Bige7:
     """ Content from www.bqg70.com """
@@ -316,10 +317,15 @@ class Bige7:
 
     def crawl_result_to_txt(self, futures, path, book_name):
         """ Crawl result to txt """
-        with open(os.path.join(path, book_name + ".txt"), "w", encoding="utf-8") as file:
-            for future in futures:
+        with open(os.path.join(path, f"{book_name}.txt"), "w", encoding="utf-8") as file:
+            for i, future in enumerate(futures):
                 chapter_json = future.result()
-                file.write(chapter_json["title"] + "\n")
+                chapter = chapter_json["title"].strip().split(' ')[0]   # 第XXX? XXXXXX变为第XXX?
+                if re.match(r'第.*章', chapter) is None:
+                    chapter = f'第{i + 1}章 第{i + 1}章'
+                else:
+                    chapter = chapter_json["title"]
+                file.write(chapter + "\n")
                 file.write(chapter_json["content"] + "\n\n")
 
         # 生成txt文件
